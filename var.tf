@@ -9,3 +9,11 @@ variable "subnet_cidr" {
 variable "region" {
   default = "ap-southeast-2"
 }
+
+variable "ami_id" {
+  default = "ami-03ed5bd63ba378bd8"
+}
+
+variable "instance_type" {
+  default = "t2.micro"
+}
