@@ -1,5 +1,5 @@
 resource "aws_vpc" "apac" {
-  cidr_block       = "190.160.0.0/16"
+  cidr_block       = "${var.vpc_cidr}"
   instance_tenancy = "default"
 
   tags = {
@@ -10,7 +10,7 @@ resource "aws_vpc" "apac" {
 
 resource "aws_subnet" "public" {
   vpc_id                  = "${aws_vpc.apac.id}"
-  cidr_block              = "190.160.1.0/24"
+  cidr_block              = "${var.subnet_cidr}"
   map_public_ip_on_launch = true
 
   tags = {
