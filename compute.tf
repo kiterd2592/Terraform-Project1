@@ -5,6 +5,7 @@ resource "aws_instance" "web" {
   key_name                    = "apackey"
   subnet_id                   = "${aws_subnet.public.id}"
   user_data                   = "${file("install_lamp.sh")}"
+  vpc_security_group_ids      = ["${aws_security_group.webserver.id}"]
 
   tags = {
     Name = "Lab_instance"
