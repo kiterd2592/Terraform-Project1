@@ -10,12 +10,14 @@ resource "aws_vpc" "apac" {
 }
 
 resource "aws_subnet" "public" {
+  count = "${length(var.azs)}"
+  availability_zone       = "${element(var.azs, count.index)}"
   vpc_id                  = "${aws_vpc.apac.id}"
-  cidr_block              = "${var.subnet_cidr}"
+  cidr_block              = "${element(var.subnet_cidr,count.index)}"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "public"
+    Name = "public-${count.index+1}"
   }
 }
 
@@ -38,10 +40,11 @@ resource "aws_route_table" "pubroute" {
   }
 }
 
-resource "aws_route_table_association" "pubroute" {
-  subnet_id      = "${aws_subnet.public.id}"
-  route_table_id = "${aws_route_table.pubroute.id}"
-}
+#resource "aws_route_table_association" "pubroute" {
+# count          = "${element(var.vpc_subnet_ips)}"
+# subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
+#route_table_id = "${aws_route_table.pubroute.id}"
+#}
 
 resource "aws_security_group" "webserver" {
   name        = "webserver"

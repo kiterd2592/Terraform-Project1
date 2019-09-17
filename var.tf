@@ -3,7 +3,13 @@ variable "vpc_cidr" {
 }
 
 variable "subnet_cidr" {
-  default = "190.160.1.0/24"
+  type = "list"
+  default = ["190.160.1.0/24","190.160.2.0/24","190.160.3.0/24"]
+}
+
+variable "azs" {
+  type = "list"
+  default = ["ap-southeast-2a","ap-southeast-2b","ap-southeast-2c"]
 }
 
 variable "region" {
@@ -17,3 +23,8 @@ variable "ami_id" {
 variable "instance_type" {
   default = "t2.micro"
 }
+variable "vpc_subnet_ips" {
+  type="list" 
+  default = ["190.160.1.0/24", "190.160.2.0/24", "190.160.3.0"]
+}
+
