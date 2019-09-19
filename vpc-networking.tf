@@ -1,6 +1,6 @@
 resource "aws_vpc" "apac" {
-  cidr_block       = "${var.vpc_cidr}"
-  instance_tenancy = "default"
+  cidr_block           = "${var.vpc_cidr}"
+  instance_tenancy     = "default"
   enable_dns_hostnames = true
 
   tags = {
@@ -10,14 +10,14 @@ resource "aws_vpc" "apac" {
 }
 
 resource "aws_subnet" "public" {
-  count = "${length(var.azs)}"
+  count                   = "${length(var.azs)}"
   availability_zone       = "${element(var.azs, count.index)}"
   vpc_id                  = "${aws_vpc.apac.id}"
-  cidr_block              = "${element(var.subnet_cidr,count.index)}"
+  cidr_block              = "${element(var.subnet_cidr, count.index)}"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "public-${count.index+1}"
+    Name = "public-${count.index + 1}"
   }
 }
 
@@ -56,14 +56,22 @@ resource "aws_security_group" "webserver" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    
+
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
   }
 
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
 
   }
 
